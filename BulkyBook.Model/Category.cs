@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace BulkyBookWeb.Models
+namespace BulkyBook.Model
 {
     public class Category
     {
@@ -11,7 +11,7 @@ namespace BulkyBookWeb.Models
         public string Name { get; set; }
         [Required]
         [DisplayName("Display Order")]
-        [Range(1,100,ErrorMessage ="Please enter Minimum 1 and maximum 100")]
+        [Range(1, 100, ErrorMessage = "Please enter Minimum 1 and maximum 100")]
         public int DisplayOrder { get; set; }
 
         public DateTime CreatedDateTime { get; set; } = DateTime.Now;

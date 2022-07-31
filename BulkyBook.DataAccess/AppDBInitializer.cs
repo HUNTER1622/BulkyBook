@@ -1,6 +1,8 @@
-﻿using BulkyBookWeb.Models;
+﻿using BulkyBook.Model;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace BulkyBookWeb.Data
+namespace BulkyBook.DataAccess
 {
     public class AppDBInitializer
     {
@@ -32,7 +34,7 @@ namespace BulkyBookWeb.Data
                     });
                     context.SaveChanges();
                 }
-                
+
             }
         }
     }
