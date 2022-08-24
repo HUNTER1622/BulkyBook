@@ -1,4 +1,5 @@
 ﻿using BulkyBook.DataAccess;
+using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,15 +7,15 @@ namespace BulkyBookWeb.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDBContext db;
-        public CategoryController(ApplicationDBContext _db)
+        private readonly IUnitOfWork db;
+        public CategoryController(IUnitOfWork _db)
         {
            db = _db;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Category> Categorylist = db.Categories;
+            IEnumerable<Category> Categorylist = db.Category.GetAll();
             return View(Categorylist);
         }
         //Get Create Section
@@ -34,8 +35,8 @@ namespace BulkyBookWeb.Controllers
             }
             if(ModelState.IsValid)
             {
-                db.Categories.Add(model);
-                db.SaveChanges();
+                db.Category.Add(model);
+                db.Save();
                 TempData["Success"] = "Created Sucessfully";
                 return RedirectToAction(nameof(Index));
 
@@ -49,7 +50,7 @@ namespace BulkyBookWeb.Controllers
             {
                 return NotFound();
             }
-            var CategoryDetail = db.Categories.Find(id);
+            var CategoryDetail = db.Category.GetFirstOrDefault(x=> x.Id == id);
             if(CategoryDetail == null)
             {
                 return NotFound();
@@ -64,8 +65,8 @@ namespace BulkyBookWeb.Controllers
             {
                 return NotFound();
             }
-            db.Categories.Update(model);
-            db.SaveChanges();
+            db.Category.Update(model);
+            db.Save();
             TempData["Success"] = "Updated Sucessfully";
             return RedirectToAction(nameof(Index));
         }
@@ -76,7 +77,7 @@ namespace BulkyBookWeb.Controllers
             {
                 return NotFound();
             }
-            var CategoryDetail = db.Categories.Find(id);
+            var CategoryDetail = db.Category.GetFirstOrDefault(x=>x.Id==id);
             return View(CategoryDetail);
         }
         [HttpPost]
@@ -87,8 +88,8 @@ namespace BulkyBookWeb.Controllers
             {
                 return NotFound();
             }
-            db.Categories.Remove(model);
-            db.SaveChanges();
+            db.Category.Remove(model);
+            db.Save();
             TempData["Success"] = "Deleted Sucessfully";
             return RedirectToAction(nameof(Index));
         }
